@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { list } from 'postcss';
+import api from '../services/api';
 
 import './Feed.css';
 
@@ -9,76 +9,46 @@ import comment from "../assets/comment.svg";
 import send from "../assets/send.svg";
 
 class Feed extends Component {
+    state = {
+        feed: [],
+    };
+    
+    async componentDidMount(){
+        const response = await api.get('/posts');
+
+        this.setState({ feed: response.data });
+
+    };
+
     render(){
         return(
             <section id="post-list">
-                <article>
-                    <header>
-                        <div class="user-info">
-                            <span>Luiz Ortega</span>
-                            <span className="place">São Paulo</span>
-                        </div>
-                        <img src={more} alt="Mais" />
-                    </header>
-                    <img src="http://localhost:3333/files/LOGO-transparentbackground.jpg" alt=""/>
+               { this.state.feed.map(post => (
+                     <article>
+                     <header>
+                         <div class="user-info">
+                             <span>{post.author}</span>
+                             <span className="place">{post.place}</span>
+                         </div>
+                         <img src={more} alt="Mais" />
+                     </header>
+                     <img src={`http://localhost:3333/files/${post.image}`} alt=""/>
+ 
+                     <footer>
+                         <div className="actions">
+                             <img src={like} alt="" />
+                             <img src={comment} alt=""/>
+                             <img src={send} alt="" />
+                         </div>
 
-                    <footer>
-                        <div className="actions">
-                            <img src={like} alt="" />
-                            <img src={comment} alt=""/>
-                            <img src={send} alt="" />
-                        </div>
+                         <strong>{post.likes} curtidas</strong>
 
-                        <p>Primeiro Post</p>
-                        <span>$reactJs #InstaKlone</span>
-                    </footer>
-                </article>
-
-
-                <article>
-                    <header>
-                        <div class="user-info">
-                            <span>Luiz Ortega</span>
-                            <span className="place">São Paulo</span>
-                        </div>
-                        <img src={more} alt="Mais" />
-                    </header>
-                    <img src="http://localhost:3333/files/LOGO-transparentbackground.jpg" alt=""/>
-
-                    <footer>
-                        <div className="actions">
-                            <img src={like} alt="" />
-                            <img src={comment} alt=""/>
-                            <img src={send} alt="" />
-                        </div>
-
-                        <p>Primeiro Post</p>
-                        <span>$reactJs #InstaKlone</span>
-                    </footer>
-                </article>
-
-
-                <article>
-                    <header>
-                        <div class="user-info">
-                            <span>Luiz Ortega</span>
-                            <span className="place">São Paulo</span>
-                        </div>
-                        <img src={more} alt="Mais" />
-                    </header>
-                    <img src="http://localhost:3333/files/LOGO-transparentbackground.jpg" alt=""/>
-
-                    <footer>
-                        <div className="actions">
-                            <img src={like} alt="" />
-                            <img src={comment} alt=""/>
-                            <img src={send} alt="" />
-                        </div>
-
-                        <p>Primeiro Post</p>
-                        <span>$reactJs #InstaKlone</span>
-                    </footer>
-                </article>
+                         <p>Primeiro Post</p>
+                         {post.description}
+                         <span>{post.hashtags}</span>
+                     </footer>
+                 </article>
+               )) }  
             </section>   
         )
     }
