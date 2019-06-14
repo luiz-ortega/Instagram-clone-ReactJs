@@ -23,7 +23,7 @@ class Feed extends Component {
     };
 
     registerToSocket = () => {
-        const socket = io('http://localhost:3333/');
+        const socket = io('http://localhost:3333');
 
         socket.on('post', newPost => {
             this.setState({ feed: [newPost, ...this.state.feed] });
@@ -32,7 +32,7 @@ class Feed extends Component {
         socket.on('like', likedPost => {
             this.setState({
                 feed: this.state.feed.map(post => 
-                    post._id === likedPost._id ? likedPost : post
+                    post.id === likedPost._id ? likedPost : post
                 )
             });
         });
