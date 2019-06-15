@@ -32,7 +32,7 @@ class Feed extends Component {
         socket.on('like', likedPost => {
             this.setState({
                 feed: this.state.feed.map(post => 
-                    post.id === likedPost._id ? likedPost : post
+                    post._id === likedPost._id ? likedPost : post
                 )
             });
         });
@@ -67,8 +67,8 @@ class Feed extends Component {
 
                          <strong>{post.likes} curtidas</strong>
 
-                         <p>Primeiro Post</p>
-                         {post.description}
+                         <p>{post.description}</p>
+                         
                          <span>{post.hashtags}</span>
                      </footer>
                  </article>
